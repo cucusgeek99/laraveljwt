@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Crypto;
+use App\Http\Resources\CryptoResource;
 
 
 
 class CryptoController extends Controller
 {
+    // public function __construct() {
+    //     $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    // }
     public function index()
     {
         $cryptos = Crypto::paginate();
 
+        return CryptoResource::collection($cryptos)->response();
  
-        return response()->json([
-            'success' => true,
-            'data' => $cryptos
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $cryptos
+        // ]);
     }
  
     public function show($id)
@@ -30,25 +35,29 @@ class CryptoController extends Controller
                 'message' => 'crypto not found'
             ], 400);
         }
-        // return (new CryptoResource($crypto))->response();
+        return (new CryptoResource($crypto))->response();
 
  
-        return response()->json([
-            'success' => true,
-            'data' => $crypto->toArray()
-        ], 400);
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $crypto->toArray()
+        // ], 400);
     }
  
     public function store(Request $request)
     {
         $this->validate($request, [         
            
-            'name'=> 'required',
-                      
+            'cryptoName'=> 'required',
+            'cryptoSigle'=> 'required',
+            'cryptoAddress'=> 'required',
+            'cryptoImage'=> 'required'           
         ]); 
         $crypto = new crypto();
-        $crypto->name = $request->name;
-        
+        $crypto->cryptoName = $request->cryptoName;
+        $crypto->cryptoSigle = $request->cryptoSigle;
+        $crypto->cryptoAddress = $request->cryptoAddress;
+        $crypto->cryptoImage = $request->cryptoImage;
 
 
         $response = Crypto::create($request->all());

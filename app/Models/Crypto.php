@@ -9,7 +9,7 @@ class Crypto extends Model
 { 
     protected $primaryKey = 'idcrypto';
 
-    protected $fillable=['name'];
+    protected $fillable=['cryptoName','cryptoSigle','cryptoAddress','cryptoImage','status'];
     use HasFactory;
 
     
